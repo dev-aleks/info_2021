@@ -4,8 +4,8 @@ import pygame
 pygame.init()
 
 # set screen:
-screen_width = 400
-screen_height = 400
+screen_width = 1280
+screen_height = 720
 screen = pygame.display.set_mode([screen_width, screen_height])
 
 # variable color:
@@ -14,6 +14,8 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+PANDA_BACKGROUND = (255, 175, 128)
+PANDA_WOOD = (0, 104, 55)
 
 # loop until the user clicks the close button:
 done = False
@@ -29,7 +31,11 @@ while not done:
         if event.type == pygame.QUIT:   # if user clicked close
             done = True                 # change flag; exit from loop
     # drawing...
-    screen.fill(GREEN)
+    # draw screen background:
+    screen.fill(PANDA_BACKGROUND)
+    # draw woods:
+    pygame.draw.line(screen, PANDA_WOOD, [screen_width // 2, screen_height // 2], [screen_width // 2, screen_height // 2 + 50], 20)
+
 
     # after all drawing commands update screen:
     pygame.display.update()
