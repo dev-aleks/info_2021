@@ -5,8 +5,8 @@ from random import randint
 pygame.init()
 
 # set screen:
-screen_width = 1200
-screen_height = 900
+screen_width = 1000
+screen_height = 800
 screen = pygame.display.set_mode([screen_width, screen_height])
 
 # variable color:
@@ -26,16 +26,39 @@ def new_ball():
     Размеры рандомные и автоматические.
     Координаты рисования автоматические
     '''
-    x = randint(100, 1100)
-    y = randint(100, 900)
+    global x, y, r
+    x = randint(100, screen_width)
+    y = randint(100, screen_height)
     r = randint(10, 100)
     color = COLORS[randint(0,5)]
     pygame.draw.circle(screen, color, (x, y), r)
 
+def click(event):
+    '''
+    Функция для получения координат круга
+    '''
+    return x, y, r
+
+def calculate_and_compare(x1, y1, R1, x2, y2):
+    '''
+    Функция для подсчета и сравнения расстояния между двумя точками
+    :param x1: координата x круга
+    :param y1: координата y круга
+    :param R1: значение радиуса круга
+    :param x2: координата x нажатия
+    :param y2: координата y нажатия
+    :return: результат, попал ли в круг
+    '''
+    R2 = (((x2-x1)**2) + ((y2-y1)**2))**(0.5) # length between point
+    if R2 <= R1:
+        print('good')
+    else:
+        print ('no good')
+
 # loop until the user clicks the close button:
 done = False
 clock = pygame.time.Clock()
-max_FPS = 2
+max_FPS = 0.8
 
 while not done:
     # this limits the while loop to a max of 10 times per second.
@@ -46,8 +69,17 @@ while not done:
         if event.type == pygame.QUIT:   # if user clicked close
             done = True                 # change flag; exit from loop
 
+        #   что должно происходить при нажатии кнопки?
+        #   1) необходимо вычислить координаты круга и его радиус, зафиксировав эти значения
+        #   2) необходимо вычислить позицию нажатия мыши
+        #   3) вычислить расстояние между двумя точками - результат добавляет очко, если оно меньше или равно радиусу круга
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            click(event)
+            event.pos
+            calculate_and_compare(x, y, r, event.pos[0], event.pos[1])
+
     # drawing...
-    # set dcreen background:
+    # set screen background:
     screen.fill(BLACK)
     # drawing ball:
     new_ball()
